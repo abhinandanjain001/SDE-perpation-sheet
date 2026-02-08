@@ -15,6 +15,7 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
     url: '',
     difficulty: 'Easy' as Difficulty,
   });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (state.mode === 'EDIT' && state.initialData) {
@@ -26,13 +27,30 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
     } else {
       setFormData({ title: '', url: '', difficulty: 'Easy' });
     }
+    setError(null);
   }, [state]);
 
   if (!state.isOpen) return null;
 
+  const validateUrl = (urlString: string) => {
+    try {
+      new URL(urlString);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { title, url, difficulty } = formData;
+
+    if (state.type === 'QUESTION') {
+      if (!validateUrl(url)) {
+        setError('Please enter a valid URL (including http:// or https://)');
+        return;
+      }
+    }
 
     if (state.type === 'TOPIC') {
       if (state.mode === 'ADD') store.addTopic(title);
@@ -54,7 +72,7 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all animate-in fade-in zoom-in duration-200">
         <div className="px-6 py-4 border-b flex justify-between items-center bg-slate-50">
           <h3 className="text-lg font-semibold text-slate-800">
             {state.mode === 'ADD' ? 'Add' : 'Edit'} {state.type?.toLowerCase()}
@@ -83,12 +101,15 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Problem URL</label>
                 <input
                   required
-                  type="url"
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all ${error ? 'border-rose-500 bg-rose-50' : ''}`}
                   value={formData.url}
-                  onChange={e => setFormData({ ...formData, url: e.target.value })}
+                  onChange={e => {
+                    setFormData({ ...formData, url: e.target.value });
+                    if (error) setError(null);
+                  }}
                   placeholder="https://leetcode.com/problems/..."
                 />
+                {error && <p className="text-xs text-rose-500 mt-1 font-medium">{error}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Difficulty</label>
