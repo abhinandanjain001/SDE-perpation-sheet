@@ -1,5 +1,5 @@
 {
-  "name": "Hierarchical Question Management Sheet",
+  "name": "Abhinandan jain special SDE roadmap",
   "description": "A sophisticated React-based dashboard for managing hierarchical coding interview questions. It supports deep nesting of topics, sub-topics, and questions with full CRUD functionality and seamless drag-and-drop reordering using Zustand for state management and Tailwind CSS for a premium UI experience.",
   "requestFramePermissions": []
 }

@@ -14,14 +14,13 @@ const App: React.FC = () => {
     deleteTopic, 
     deleteSubTopic, 
     deleteQuestion,
-    reorderTopics,
-    reorderSubTopics,
-    reorderQuestions
+    reorderTopics
   } = useSheetStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [modalState, setModalState] = useState<ModalState>({ isOpen: false, type: null, mode: 'ADD' });
-  const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set(['t1']));
+  // Set default expanded topic to 't-basics' to match seeded data
+  const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set(['t-basics']));
 
   // Statistics
   const stats = useMemo(() => {
@@ -74,6 +73,24 @@ const App: React.FC = () => {
     Easy: 'bg-emerald-100 text-emerald-700',
     Medium: 'bg-amber-100 text-amber-700',
     Hard: 'bg-rose-100 text-rose-700'
+  };
+
+  const handleDeleteTopic = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this topic and all its contents?')) {
+      deleteTopic(id);
+    }
+  };
+
+  const handleDeleteSubTopic = (topicId: string, subTopicId: string) => {
+    if (window.confirm('Delete this section and all its problems?')) {
+      deleteSubTopic(topicId, subTopicId);
+    }
+  };
+
+  const handleDeleteQuestion = (topicId: string, subTopicId: string, questionId: string) => {
+    if (window.confirm('Delete this problem?')) {
+      deleteQuestion(topicId, subTopicId, questionId);
+    }
   };
 
   return (
@@ -176,7 +193,7 @@ const App: React.FC = () => {
                     <EditIcon />
                   </button>
                   <button 
-                    onClick={() => { if(confirm('Delete Topic?')) deleteTopic(topic.id) }}
+                    onClick={() => handleDeleteTopic(topic.id)}
                     className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                   >
                     <DeleteIcon />
@@ -221,7 +238,7 @@ const App: React.FC = () => {
                             <EditIcon />
                           </button>
                           <button 
-                            onClick={() => { if(confirm('Delete Section?')) deleteSubTopic(topic.id, sub.id) }}
+                            onClick={() => handleDeleteSubTopic(topic.id, sub.id)}
                             className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                           >
                             <DeleteIcon />
@@ -271,7 +288,7 @@ const App: React.FC = () => {
                                 <EditIcon className="w-4 h-4" />
                               </button>
                               <button 
-                                onClick={() => { if(confirm('Delete Question?')) deleteQuestion(topic.id, sub.id, q.id) }}
+                                onClick={() => handleDeleteQuestion(topic.id, sub.id, q.id)}
                                 className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                               >
                                 <DeleteIcon className="w-4 h-4" />
