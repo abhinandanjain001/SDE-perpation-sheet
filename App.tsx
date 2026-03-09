@@ -1,11 +1,25 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSheetStore } from './store';
 import { Topic, SubTopic, Question, ModalState, Difficulty } from './types';
 import { PlusIcon, EditIcon, DeleteIcon, GripIcon, ExternalLinkIcon, CheckIcon } from './components/Icons';
 import AddEditModal from './components/AddEditModal';
+import { auth } from './firebase';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
+import Auth from './components/Auth';
 
 const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoadingAuth(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const { 
     topics, 
     title, 
@@ -36,13 +50,35 @@ const App: React.FC = () => {
   const filteredTopics = useMemo(() => {
     if (!searchQuery) return topics;
     const query = searchQuery.toLowerCase();
-    return topics.map(t => ({
-      ...t,
-      subTopics: t.subTopics.map(st => ({
-        ...st,
-        questions: st.questions.filter(q => q.title.toLowerCase().includes(query))
-      })).filter(st => st.questions.length > 0 || st.title.toLowerCase().includes(query))
-    })).filter(t => t.subTopics.length > 0 || t.title.toLowerCase().includes(query));
+    
+    return topics.reduce((acc: Topic[], topic) => {
+      const topicMatches = topic.title.toLowerCase().includes(query);
+      
+      const filteredSubTopics = topic.subTopics.reduce((subAcc: SubTopic[], subTopic) => {
+        const subTopicMatches = subTopic.title.toLowerCase().includes(query);
+        
+        const filteredQuestions = subTopic.questions.filter(q => 
+          q.title.toLowerCase().includes(query)
+        );
+        
+        if (topicMatches || subTopicMatches || filteredQuestions.length > 0) {
+          subAcc.push({
+            ...subTopic,
+            questions: (topicMatches || subTopicMatches) ? subTopic.questions : filteredQuestions
+          });
+        }
+        return subAcc;
+      }, []);
+      
+      if (topicMatches || filteredSubTopics.length > 0) {
+        acc.push({
+          ...topic,
+          subTopics: topicMatches ? topic.subTopics : filteredSubTopics
+        });
+      }
+      
+      return acc;
+    }, []);
   }, [topics, searchQuery]);
 
   const toggleTopic = (id: string) => {
@@ -93,6 +129,18 @@ const App: React.FC = () => {
     }
   };
 
+  if (loadingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Auth />;
+  }
+
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
@@ -125,6 +173,12 @@ const App: React.FC = () => {
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-indigo-200 transition-all active:scale-95"
             >
               <PlusIcon /> Add Topic
+            </button>
+            <button
+              onClick={() => signOut(auth)}
+              className="text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors"
+            >
+              Sign out
             </button>
           </div>
         </div>
