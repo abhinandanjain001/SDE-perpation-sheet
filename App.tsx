@@ -35,6 +35,7 @@ const App: React.FC = () => {
   const [modalState, setModalState] = useState<ModalState>({ isOpen: false, type: null, mode: 'ADD' });
   // Set default expanded topic to 't-basics' to match seeded data
   const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set(['t-basics']));
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   // Statistics
   const stats = useMemo(() => {
@@ -174,12 +175,41 @@ const App: React.FC = () => {
             >
               <PlusIcon /> Add Topic
             </button>
-            <button
-              onClick={() => signOut(auth)}
-              className="text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors"
-            >
-              Sign out
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold hover:bg-indigo-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+              </button>
+              
+              {isProfileOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsProfileOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-slate-100 py-2 z-50">
+                    <div className="px-4 py-3 border-b border-slate-100">
+                      <p className="text-sm font-medium text-slate-900 truncate">{user.displayName || 'User'}</p>
+                      <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                    </div>
+                    <div className="py-1">
+                      <button
+                        onClick={() => {
+                          setIsProfileOpen(false);
+                          signOut(auth);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors flex items-center gap-2"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </header>
