@@ -531,43 +531,43 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen pb-20 bg-slate-50 text-slate-800">
       {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-40 backdrop-blur-md bg-white/80">
+      <header className="bg-slate-950 border-b border-slate-800/60 sticky top-0 z-40 backdrop-blur-md bg-slate-950/90 text-white">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-indigo-200 shadow-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 7h12"/><path d="M6 11h12"/><path d="M6 15h12"/></svg>
+            <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/10 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 7h12"/><path d="M6 11h12"/><path d="M6 15h12"/></svg>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-800 leading-none">{title}</h1>
-              <p className="text-xs text-slate-500 mt-1">Updated {new Date(lastUpdated).toLocaleDateString()}</p>
+              <h1 className="text-xs sm:text-sm font-black text-white leading-none uppercase tracking-widest">{title}</h1>
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-wider">Roadmap Tracker</p>
             </div>
           </div>
 
           {/* Core Navigation and Admin Action Board */}
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex bg-slate-100 p-1 rounded-xl border border-slate-200/50">
+          <div className="flex items-center gap-2 sm:gap-6">
+            <div className="hidden md:flex bg-slate-900 p-1 rounded-xl border border-slate-800">
               <button
                 onClick={() => setActiveTab('sheet')}
-                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'sheet' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'sheet' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
               >
                 📝 SDE Sheet
               </button>
               <button
                 onClick={() => setActiveTab('announcements')}
-                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'announcements' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'announcements' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
               >
                 📢 Announcements
               </button>
               <button
                 onClick={() => setActiveTab('materials')}
-                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'materials' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'materials' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
               >
                 📚 Study Material
               </button>
               {userProfile?.role === 'admin' && (
                 <button
                   onClick={() => setActiveTab('students')}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === 'students' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'students' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
                 >
                   👥 Students ({students.length})
                 </button>
@@ -576,12 +576,12 @@ const App: React.FC = () => {
 
             <div className="hidden md:flex items-center gap-2">
               <div className="text-right">
-                <div className="text-sm font-bold text-slate-700">{stats.completed}/{stats.total} Questions</div>
-                <div className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">{stats.percentage}% Done</div>
+                <div className="text-sm font-bold text-white">{stats.completed}/{stats.total} Solved</div>
+                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{stats.percentage}% Completed</div>
               </div>
-              <div className="w-32 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="w-32 h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
                 <div 
-                  className="h-full bg-indigo-600 transition-all duration-500 ease-out" 
+                  className="h-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 transition-all duration-500 ease-out" 
                   style={{ width: `${stats.percentage}%` }}
                 />
               </div>
@@ -590,11 +590,25 @@ const App: React.FC = () => {
             {userProfile?.role === 'admin' && activeTab === 'sheet' && (
               <button 
                 onClick={() => openModal('TOPIC', 'ADD')}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-indigo-200 transition-all active:scale-95"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-lg shadow-indigo-200 transition-all active:scale-95"
               >
                 <PlusIcon /> Add Topic
               </button>
             )}
+
+            {/* JECRC Logo on the right hand side */}
+            <div className="h-10 px-3 bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-md select-none shrink-0">
+              <img 
+                src="/jecrc logo.png" 
+                alt="JECRC Logo" 
+                className="h-7 w-auto object-contain" 
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = "/jecrc_logo.png";
+                }}
+              />
+              <span className="text-[10px] font-black text-slate-900 tracking-wider ml-1.5 hidden sm:inline-block">JECRC</span>
+            </div>
 
             <div className="relative">
               <button
@@ -710,6 +724,24 @@ const App: React.FC = () => {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 mt-8">
+        {/* Mobile-only Progress Stats Card */}
+        <div className="block md:hidden bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm mb-6 duration-300 hover:shadow-md">
+          <div className="flex justify-between items-center mb-2.5">
+            <div>
+              <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">DSA Sheet Progress</p>
+              <h3 className="text-base font-black text-slate-800 mt-1.5">{stats.completed} of {stats.total} Solved</h3>
+            </div>
+            <div className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/80 rounded-xl text-indigo-700 text-xs font-black">
+              {stats.percentage}%
+            </div>
+          </div>
+          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200/40">
+            <div 
+              className="h-full bg-gradient-to-r from-indigo-500 via-indigo-600 to-emerald-500 transition-all duration-500 ease-out rounded-full" 
+              style={{ width: `${stats.percentage}%` }}
+            />
+          </div>
+        </div>
         {firestoreError && showConfigGuide && (
           <div className="mb-8 bg-amber-50/95 border border-amber-200/80 rounded-3xl p-6 shadow-md relative animate-fade-in text-slate-800 backdrop-blur-sm">
             <button 
@@ -892,30 +924,30 @@ service cloud.firestore {
           </div>
         )}
 
-        {/* Mobile Tab Toggle indicator */}
-        <div className="flex md:hidden bg-slate-100 p-1 rounded-xl mb-6 border border-slate-200/50 overflow-x-auto gap-1">
+        {/* Mobile Tab Toggle indicator with premium dark glass styling */}
+        <div className="flex md:hidden bg-slate-900/95 backdrop-blur-md p-1 rounded-2xl mb-6 border border-slate-800/80 shadow-lg overflow-x-auto scrollbar-none gap-1">
           <button
             onClick={() => setActiveTab('sheet')}
-            className={`flex-1 text-center py-2 px-3 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'sheet' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            className={`flex-1 text-center py-2.5 px-3.5 rounded-xl text-xs font-black tracking-wide whitespace-nowrap transition-all duration-300 ${activeTab === 'sheet' ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'text-slate-400 hover:text-slate-200'}`}
           >
             📝 Sheet
           </button>
           <button
             onClick={() => setActiveTab('announcements')}
-            className={`flex-1 text-center py-2 px-3 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'announcements' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            className={`flex-1 text-center py-2.5 px-3.5 rounded-xl text-xs font-black tracking-wide whitespace-nowrap transition-all duration-300 ${activeTab === 'announcements' ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'text-slate-400 hover:text-slate-200'}`}
           >
-            📢 Announcements
+            📢 Notice
           </button>
           <button
             onClick={() => setActiveTab('materials')}
-            className={`flex-1 text-center py-2 px-3 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'materials' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+            className={`flex-1 text-center py-2.5 px-3.5 rounded-xl text-xs font-black tracking-wide whitespace-nowrap transition-all duration-300 ${activeTab === 'materials' ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'text-slate-400 hover:text-slate-200'}`}
           >
-            📚 Material
+            📚 Materials
           </button>
           {userProfile?.role === 'admin' && (
             <button
               onClick={() => setActiveTab('students')}
-              className={`flex-1 text-center py-2 px-3 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'students' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+              className={`flex-1 text-center py-2.5 px-3.5 rounded-xl text-xs font-black tracking-wide whitespace-nowrap transition-all duration-300 ${activeTab === 'students' ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'text-slate-400 hover:text-slate-200'}`}
             >
               👥 Students ({students.length})
             </button>
@@ -924,25 +956,25 @@ service cloud.firestore {
 
         {activeTab === 'sheet' && (
           <>
-            {/* Search & Custom Dropdown Companies filter */}
+            {/* Search & Custom Dropdown Companies filter with premium styling */}
             <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto flex-1 max-w-2xl">
                 <div className="relative flex-1">
-                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                   <input 
-                    className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-indigo-500 outline-none transition-all shadow-sm text-sm"
+                    className="w-full bg-white border border-slate-200 focus:border-indigo-500 rounded-2xl pl-11 pr-4 py-3 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all duration-300 shadow-sm text-sm"
                     placeholder="Search problems, topics, companies..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                   />
                 </div>
                 
-                {/* Visual Company Dropdown Filter */}
+                {/* Visual Company Dropdown Filter - Clean glassmorphic */}
                 <div className="relative">
                   <select
                     value={selectedCompany}
                     onChange={e => setSelectedCompany(e.target.value)}
-                    className="w-full sm:w-52 bg-white border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-sm text-sm font-semibold text-slate-700 cursor-pointer"
+                    className="w-full sm:w-56 bg-white border border-slate-200 focus:border-indigo-500 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/10 transition-all duration-300 shadow-sm text-sm font-semibold text-slate-700 cursor-pointer appearance-none pr-10"
                   >
                     <option value="">🏢 Filter by Company</option>
                     <option value="Google">Google Focus</option>
@@ -954,219 +986,250 @@ service cloud.firestore {
                     <option value="Uber">Uber Focus</option>
                     <option value="Adobe">Adobe Focus</option>
                   </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
                 </div>
               </div>
 
               <div className="hidden lg:flex gap-2">
-                 <div className="px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-lg text-emerald-700 text-xs font-bold uppercase tracking-widest">
+                 <div className="px-4 py-2 bg-emerald-50 border border-emerald-100/80 rounded-xl text-emerald-700 text-[10px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1.5 duration-300 hover:scale-[1.02]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     Productive Week
                  </div>
-                 <div className="px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-indigo-700 text-xs font-bold uppercase tracking-widest">
+                 <div className="px-4 py-2 bg-indigo-50 border border-indigo-100/80 rounded-xl text-indigo-700 text-[10px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1.5 duration-300 hover:scale-[1.02]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
                     Consistency+
                  </div>
               </div>
             </div>
 
-        {/* Hierarchy List */}
-        <div className="space-y-6">
-          {filteredTopics.map((topic, topicIdx) => (
-            <div key={topic.id} className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden transition-all hover:shadow-md">
-              <div className="p-4 flex items-center justify-between group">
-                <div className="flex items-center gap-4 flex-1">
-                  {userProfile?.role === 'admin' && (
-                    <button 
-                      onClick={() => reorderTopics(topicIdx, Math.max(0, topicIdx - 1))}
-                      className="p-1 text-slate-300 hover:text-slate-600 disabled:opacity-30"
-                      disabled={topicIdx === 0}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m18 15-6-6-6 6"/></svg>
-                    </button>
-                  )}
-                  <button 
-                    onClick={() => toggleTopic(topic.id)}
-                    className="flex items-center gap-3 text-left focus:outline-none"
-                  >
-                    <div className={`p-1 rounded-md transition-transform ${expandedTopics.has(topic.id) ? 'rotate-90' : ''}`}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m9 18 6-6-6-6"/></svg>
-                    </div>
-                    <h2 className="text-lg font-bold text-slate-800">{topic.title}</h2>
-                    <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">
-                      {topic.subTopics.length} sections
-                    </span>
-                  </button>
-                </div>
-                
-                {userProfile?.role === 'admin' && (
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button 
-                      onClick={() => openModal('SUBTOPIC', 'ADD', { parentId: topic.id })}
-                      className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Add Section"
-                    >
-                      <PlusIcon />
-                    </button>
-                    <button 
-                      onClick={() => openModal('TOPIC', 'EDIT', { editId: topic.id }, topic)}
-                      className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                    >
-                      <EditIcon />
-                    </button>
-                    <button 
-                      onClick={() => handleDeleteTopic(topic.id)}
-                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                    >
-                      <DeleteIcon />
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {expandedTopics.has(topic.id) && (
-                <div className="border-t bg-slate-50/50 p-4 space-y-4">
-                  {topic.subTopics.length === 0 && (
-                    <div className="text-center py-8 border-2 border-dashed rounded-xl border-slate-200">
-                      <p className="text-sm text-slate-400 mb-4">No sections in this topic yet</p>
+            {/* Hierarchy List */}
+            <div className="space-y-6">
+              {filteredTopics.map((topic, topicIdx) => (
+                <div key={topic.id} className="bg-white border border-slate-200/80 rounded-3xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md hover:border-slate-300/80">
+                  <div className="p-5 flex items-center justify-between group bg-slate-50/20 border-b border-slate-100">
+                    <div className="flex items-center gap-4 flex-1">
                       {userProfile?.role === 'admin' && (
                         <button 
-                          onClick={() => openModal('SUBTOPIC', 'ADD', { parentId: topic.id })}
-                          className="text-indigo-600 font-semibold text-sm hover:underline"
+                          onClick={() => reorderTopics(topicIdx, Math.max(0, topicIdx - 1))}
+                          className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-slate-100 rounded-lg disabled:opacity-30 transition-all duration-300"
+                          disabled={topicIdx === 0}
+                          title="Move Up"
                         >
-                          Create first section
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m18 15-6-6-6 6"/></svg>
                         </button>
                       )}
-                    </div>
-                  )}
-                  {topic.subTopics.map((sub, subIdx) => (
-                    <div key={sub.id} className="bg-white border rounded-xl shadow-sm overflow-hidden group/sub">
-                      <div className="px-4 py-3 bg-slate-50/80 border-b flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          {userProfile?.role === 'admin' && (
-                            <GripIcon className="text-slate-300 cursor-grab active:cursor-grabbing" />
-                          )}
-                          <h3 className="font-semibold text-slate-700">{sub.title}</h3>
-                          <span className="text-[10px] font-bold text-slate-400 border border-slate-200 rounded px-1.5 uppercase">
-                            {sub.questions.length} problems
-                          </span>
+                      
+                      <button 
+                        onClick={() => toggleTopic(topic.id)}
+                        className="flex items-center gap-4 text-left focus:outline-none flex-1"
+                      >
+                        <div className={`p-1.5 rounded-xl bg-slate-100 text-slate-500 transition-transform duration-300 ${expandedTopics.has(topic.id) ? 'rotate-90 bg-indigo-50 text-indigo-600' : ''}`}>
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><path d="m9 18 6-6-6-6"/></svg>
                         </div>
-                        {userProfile?.role === 'admin' && (
-                          <div className="flex items-center gap-1 opacity-0 group-hover/sub:opacity-100 transition-opacity">
-                            <button 
-                              onClick={() => openModal('QUESTION', 'ADD', { parentId: sub.id, grandParentId: topic.id })}
-                              className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors" title="Add Question"
-                            >
-                              <PlusIcon />
-                            </button>
-                            <button 
-                              onClick={() => openModal('SUBTOPIC', 'EDIT', { parentId: topic.id, editId: sub.id }, sub)}
-                              className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
-                            >
-                              <EditIcon />
-                            </button>
-                            <button 
-                              onClick={() => handleDeleteSubTopic(topic.id, sub.id)}
-                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
-                            >
-                              <DeleteIcon />
-                            </button>
-                          </div>
-                        )}
+                        <div>
+                          <h2 className="text-base font-extrabold text-slate-800 group-hover:text-indigo-600 transition-colors duration-200">{topic.title}</h2>
+                          <p className="text-[11px] text-slate-400 font-semibold mt-0.5 uppercase tracking-wide">Topic Overview</p>
+                        </div>
+                        <span className="text-[11px] bg-slate-100 text-slate-600 border border-slate-200/60 px-2.5 py-1 rounded-full font-bold">
+                          {topic.subTopics.length} sections
+                        </span>
+                      </button>
+                    </div>
+                    
+                    {userProfile?.role === 'admin' && (
+                      <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <button 
+                          onClick={() => openModal('SUBTOPIC', 'ADD', { parentId: topic.id })}
+                          className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all" title="Add Section"
+                        >
+                          <PlusIcon />
+                        </button>
+                        <button 
+                          onClick={() => openModal('TOPIC', 'EDIT', { editId: topic.id }, topic)}
+                          className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-slate-50 rounded-xl transition-all"
+                          title="Edit Topic"
+                        >
+                          <EditIcon />
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteTopic(topic.id)}
+                          className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
+                          title="Delete Topic"
+                        >
+                          <DeleteIcon />
+                        </button>
                       </div>
+                    )}
+                  </div>
 
-                      <div className="divide-y divide-slate-100">
-                        {sub.questions.map((q, qIdx) => (
-                          <div 
-                            key={q.id} 
-                            className={`flex items-center p-4 hover:bg-slate-50 transition-colors group/row ${q.completed ? 'bg-slate-50/50' : ''}`}
-                          >
+                  {expandedTopics.has(topic.id) && (
+                    <div className="bg-slate-50/40 p-5 space-y-5 border-t border-slate-100">
+                      {topic.subTopics.length === 0 && (
+                        <div className="text-center py-10 border-2 border-dashed rounded-2xl border-slate-200 bg-white">
+                          <p className="text-sm text-slate-400 font-medium mb-3">No sections in this topic yet</p>
+                          {userProfile?.role === 'admin' && (
                             <button 
-                              onClick={() => handleToggleQuestionStatus(topic.id, sub.id, q.id)}
-                              className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
-                                q.completed 
-                                  ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-200 shadow-lg' 
-                                  : 'border-slate-300 hover:border-indigo-500 text-transparent'
-                              }`}
+                              onClick={() => openModal('SUBTOPIC', 'ADD', { parentId: topic.id })}
+                              className="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 border border-indigo-150 px-3.5 py-2 rounded-xl transition-all"
                             >
-                              <CheckIcon />
+                              Create first section
                             </button>
-                            
-                            <div className="ml-4 flex-1">
-                              <div className="flex items-center gap-3 flex-wrap">
-                                <a 
-                                  href={q.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className={`text-sm font-semibold transition-all hover:text-indigo-600 flex items-center gap-1.5 ${q.completed ? 'text-slate-400 line-through' : 'text-slate-800'}`}
-                                >
-                                  {q.title}
-                                  <ExternalLinkIcon className="w-3.5 h-3.5 opacity-0 group-hover/row:opacity-100 transition-opacity" />
-                                </a>
-                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${difficultyStyles[q.difficulty]}`}>
-                                  {q.difficulty}
-                                </span>
-                                {q.companies && q.companies.map((comp: string) => (
-                                  <span key={comp} className="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded text-[9px] font-black border border-slate-200 uppercase tracking-wide">
-                                    {comp}
-                                  </span>
-                                ))}
-                              </div>
+                          )}
+                        </div>
+                      )}
+                      
+                      {topic.subTopics.map((sub, subIdx) => (
+                        <div key={sub.id} className="bg-white border border-slate-200/60 rounded-2xl shadow-sm overflow-hidden group/sub transition-all duration-300 hover:border-slate-350">
+                          <div className="px-5 py-3.5 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              {userProfile?.role === 'admin' && (
+                                <GripIcon className="text-slate-300 cursor-grab active:cursor-grabbing hover:text-slate-550 transition-colors" />
+                              )}
+                              <h3 className="font-extrabold text-slate-700 text-sm">{sub.title}</h3>
+                              <span className="text-[9px] font-black text-slate-400 border border-slate-200/60 rounded px-1.5 py-0.5 uppercase tracking-wide bg-white">
+                                {sub.questions.length} problems
+                              </span>
                             </div>
-
                             {userProfile?.role === 'admin' && (
-                              <div className="flex items-center gap-2 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                              <div className="flex items-center gap-1 opacity-0 group-hover/sub:opacity-100 transition-all duration-300">
                                 <button 
-                                  onClick={() => openModal('QUESTION', 'EDIT', { parentId: sub.id, grandParentId: topic.id, editId: q.id }, q)}
-                                  className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                                  onClick={() => openModal('QUESTION', 'ADD', { parentId: sub.id, grandParentId: topic.id })}
+                                  className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" title="Add Question"
                                 >
-                                  <EditIcon className="w-4 h-4" />
+                                  <PlusIcon />
                                 </button>
                                 <button 
-                                  onClick={() => handleDeleteQuestion(topic.id, sub.id, q.id)}
-                                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                                  onClick={() => openModal('SUBTOPIC', 'EDIT', { parentId: topic.id, editId: sub.id }, sub)}
+                                  className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                                  title="Edit Section"
                                 >
-                                  <DeleteIcon className="w-4 h-4" />
+                                  <EditIcon />
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteSubTopic(topic.id, sub.id)}
+                                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                  title="Delete Section"
+                                >
+                                  <DeleteIcon />
                                 </button>
                               </div>
                             )}
                           </div>
-                        ))}
-                      </div>
-                      {sub.questions.length === 0 && (
-                        <div className="p-8 text-center bg-white">
-                          <p className="text-sm text-slate-400 mb-2">No problems listed yet</p>
-                          {userProfile?.role === 'admin' && (
-                            <button 
-                               onClick={() => openModal('QUESTION', 'ADD', { parentId: sub.id, grandParentId: topic.id })}
-                               className="text-xs font-bold text-indigo-600 hover:underline"
-                            >
-                               + Add Problem
-                            </button>
+
+                          <div className="divide-y divide-slate-100">
+                            {sub.questions.map((q, qIdx) => {
+                              // Custom dynamic hover left border accent matching difficulty
+                              const borderLeftAccent: Record<Difficulty, string> = {
+                                Easy: 'hover:border-l-4 hover:border-l-emerald-500',
+                                Medium: 'hover:border-l-4 hover:border-l-amber-500',
+                                Hard: 'hover:border-l-4 hover:border-l-rose-500'
+                              };
+
+                              return (
+                                <div 
+                                  key={q.id} 
+                                  className={`flex items-center p-4 pl-5 transition-all duration-200 border-l-4 border-l-transparent group/row ${
+                                    borderLeftAccent[q.difficulty]
+                                  } ${q.completed ? 'bg-slate-50/40' : 'bg-white'}`}
+                                >
+                                  <button 
+                                    onClick={() => handleToggleQuestionStatus(topic.id, sub.id, q.id)}
+                                    className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-300 shrink-0 ${
+                                      q.completed 
+                                        ? 'bg-emerald-550 border-emerald-550 text-white shadow-emerald-250/30 shadow-lg scale-102' 
+                                        : 'border-slate-300 hover:border-indigo-500 hover:bg-indigo-50/10 text-transparent'
+                                    }`}
+                                  >
+                                    <CheckIcon />
+                                  </button>
+                                  
+                                  <div className="ml-4 flex-1 min-w-0">
+                                    <div className="flex items-center gap-3 flex-wrap">
+                                      <a 
+                                        href={q.url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className={`text-sm font-bold transition-all hover:text-indigo-600 flex items-center gap-1.5 truncate max-w-full ${q.completed ? 'text-slate-400 line-through' : 'text-slate-800'}`}
+                                      >
+                                        {q.title}
+                                        <ExternalLinkIcon className="w-3.5 h-3.5 opacity-0 group-hover/row:opacity-100 transition-opacity duration-200 shrink-0" />
+                                      </a>
+                                      
+                                      <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider ${difficultyStyles[q.difficulty]}`}>
+                                        {q.difficulty}
+                                      </span>
+                                      
+                                      {q.companies && q.companies.map((comp: string) => (
+                                        <span key={comp} className="px-1.5 py-0.5 bg-slate-55 shadow-sm text-slate-500 rounded text-[9px] font-black border border-slate-200 uppercase tracking-wide duration-200 hover:bg-slate-100">
+                                          {comp}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  {userProfile?.role === 'admin' && (
+                                    <div className="flex items-center gap-1.5 opacity-0 group-hover/row:opacity-100 transition-all duration-200 pl-4">
+                                      <button 
+                                        onClick={() => openModal('QUESTION', 'EDIT', { parentId: sub.id, grandParentId: topic.id, editId: q.id }, q)}
+                                        className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                                        title="Edit Problem"
+                                      >
+                                        <EditIcon className="w-4 h-4" />
+                                      </button>
+                                      <button 
+                                        onClick={() => handleDeleteQuestion(topic.id, sub.id, q.id)}
+                                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                        title="Delete Problem"
+                                      >
+                                        <DeleteIcon className="w-4 h-4" />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                          
+                          {sub.questions.length === 0 && (
+                            <div className="p-8 text-center bg-white">
+                              <p className="text-xs text-slate-400 font-semibold mb-2">No problems listed yet</p>
+                              {userProfile?.role === 'admin' && (
+                                <button 
+                                   onClick={() => openModal('QUESTION', 'ADD', { parentId: sub.id, grandParentId: topic.id })}
+                                   className="text-[11px] font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-all"
+                                >
+                                   + Add Problem
+                                </button>
+                              )}
+                            </div>
                           )}
                         </div>
-                      )}
+                      ))}
                     </div>
-                  ))}
+                  )}
+                </div>
+              ))}
+
+              {filteredTopics.length === 0 && (
+                <div className="text-center py-20 bg-white rounded-3xl border border-slate-200/80 shadow-sm">
+                   <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                   </div>
+                   <h3 className="text-lg font-black text-slate-700">No results found</h3>
+                   <p className="text-slate-400 text-xs mt-1.5 max-w-sm mx-auto">Try adjusting your search criteria or choosing a different company focus filter.</p>
+                   <button 
+                      onClick={() => { setSearchQuery(''); setSelectedCompany(''); }}
+                      className="mt-6 text-xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 border border-indigo-150 rounded-xl px-4 py-2 hover:bg-indigo-100 transition-colors cursor-pointer"
+                   >
+                     Clear Filters
+                   </button>
                 </div>
               )}
             </div>
-          ))}
-
-          {filteredTopics.length === 0 && (
-            <div className="text-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
-               <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-               </div>
-               <h3 className="text-xl font-bold text-slate-700">No results found</h3>
-               <p className="text-slate-500 mt-2">Try adjusting your search or company filters.</p>
-               <button 
-                  onClick={() => { setSearchQuery(''); setSelectedCompany(''); }}
-                  className="mt-6 text-indigo-600 font-bold hover:underline"
-               >
-                 Clear Search Filter
-               </button>
-            </div>
-          )}
-        </div>
-        </>
-      )}
+          </>
+        )}
 
       {activeTab === 'announcements' && (
         <AnnouncementsView 
