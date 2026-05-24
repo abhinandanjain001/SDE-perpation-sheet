@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and their individual roadmap progress",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The user's email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's full name"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "admin"],
+          "description": "User role: student or admin"
+        },
+        "completedQuestions": {
+          "type": "array",
+          "description": "List of question IDs that the student has completed"
+        }
+      },
+      "required": ["email", "displayName", "createdAt", "role"]
+    },
+    "GlobalSheet": {
+      "title": "GlobalSheet",
+      "description": "The golden copy SDE sheet definition containing topics, subtopics, and questions",
+      "type": "object",
+      "properties": {
+        "topics": {
+          "type": "array",
+          "description": "List of SDE sheet Topics"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "ISO timestamp of the last structural change by an Admin"
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title of the sheet"
+        }
+      },
+      "required": ["topics", "lastUpdated", "title"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "System-wide important messages sent from Admin to all users",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "attachmentName": { "type": "string" },
+        "attachmentType": { "type": "string" },
+        "attachmentData": { "type": "string" }
+      },
+      "required": ["title", "message", "createdAt", "createdBy"]
+    },
+    "StudyMaterial": {
+      "title": "StudyMaterial",
+      "description": "Learning material and resources added by Admins",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileType": { "type": "string" },
+        "fileData": { "type": "string" },
+        "externalUrl": { "type": "string" }
+      },
+      "required": ["title", "description", "category", "createdAt", "createdBy"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles and progress"
+    },
+    "/sheet/global": {
+      "schema": "GlobalSheet",
+      "description": "Document holding the master structure of JECRC SDE Sheet"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Global user-facing announcement broadsheets"
+    },
+    "/study_materials/{materialId}": {
+      "schema": "StudyMaterial",
+      "description": "Global user-facing learning collateral collection"
+    }
+  }
+}

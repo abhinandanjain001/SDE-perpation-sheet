@@ -7,6 +7,7 @@ export interface Question {
   url: string;
   difficulty: Difficulty;
   completed: boolean;
+  companies?: string[];
   notes?: string;
 }
 
@@ -40,3 +41,28 @@ export interface ModalState {
   editId?: string;
   initialData?: any;
 }
+
+export interface Announcement {
+  id: string;
+  title: string;
+  message: string;
+  createdAt: string;
+  createdBy: string;
+  attachmentName?: string;
+  attachmentType?: string;
+  attachmentData?: string; // Base64 encoding
+}
+
+export interface StudyMaterial {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  createdAt: string;
+  createdBy: string;
+  fileName?: string;
+  fileType?: string;
+  fileData?: string; // Base64 encoding
+  externalUrl?: string; // Optional URL link
+}
+

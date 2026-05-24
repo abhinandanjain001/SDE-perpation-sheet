@@ -97,19 +97,30 @@ const generateInitialData = (): Topic[] => {
     return [...base, ...placeholders].slice(0, 15);
   };
 
+  const companyPool = ['Google', 'Microsoft', 'Amazon', 'Meta', 'Netflix', 'Apple', 'Uber', 'Adobe'];
+
   return topicsList.map(topicTitle => ({
     id: `t-${topicTitle.toLowerCase().replace(' ', '-')}`,
     title: topicTitle,
     subTopics: (['Easy', 'Medium', 'Hard'] as Difficulty[]).map(diff => ({
       id: `st-${topicTitle.toLowerCase().replace(' ', '-')}-${diff.toLowerCase()}`,
       title: `${diff} Challenges`,
-      questions: getRealQuestions(topicTitle, diff).map((q, idx) => ({
-        id: `q-${topicTitle.toLowerCase().replace(' ', '-')}-${diff.toLowerCase()}-${idx}`,
-        title: q.title,
-        url: q.url,
-        difficulty: diff,
-        completed: false
-      }))
+      questions: getRealQuestions(topicTitle, diff).map((q, idx) => {
+        const charSum = topicTitle.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0) + idx;
+        const comp1 = companyPool[charSum % companyPool.length];
+        const comp2 = companyPool[(charSum + 3) % companyPool.length];
+        const comp3 = companyPool[(charSum + 5) % companyPool.length];
+        const assignedCompanies = Array.from(new Set([comp1, comp2, comp3])).slice(0, 2);
+
+        return {
+          id: `q-${topicTitle.toLowerCase().replace(' ', '-')}-${diff.toLowerCase()}-${idx}`,
+          title: q.title,
+          url: q.url,
+          difficulty: diff,
+          completed: false,
+          companies: assignedCompanies
+        };
+      })
     }))
   }));
 };
@@ -118,7 +129,7 @@ export const useSheetStore = create<SheetStore>()(
   persist(
     (set) => ({
       topics: generateInitialData(),
-      title: 'Abhinandan jain special SDE roadmap',
+      title: 'JECRC Special SDE SHEET',
       lastUpdated: new Date().toISOString(),
 
       setTopics: (topics) => set({ topics, lastUpdated: new Date().toISOString() }),

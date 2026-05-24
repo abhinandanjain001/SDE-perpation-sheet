@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny security firewall
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserData(userId) {
+      return get(/databases/$(database)/documents/users/$(userId)).data;
+    }
+
+    function isExistingUserAdmin(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId)) && 
+             getUserData(userId).role == 'admin';
+    }
+
+    match /users/{userId} {
+      // Any logged-in participant can view a user's basic profile card (get)
+      allow get: if isSignedIn();
+      
+      // Only administrators can list the entire JECRC student directory (for statistics)
+      allow list: if isSignedIn() && isExistingUserAdmin(request.auth.uid);
+
+      // Creation rules - users can register as student or admin
+      allow create: if isSignedIn() && request.auth.uid == userId && 
+                    (request.resource.data.role == 'student' || request.resource.data.role == 'admin');
+
+      // Update rules - users can update their own progress and role, and admins can modify any roles
+      allow update: if isSignedIn() && (
+        request.auth.uid == userId
+        || 
+        isExistingUserAdmin(request.auth.uid)
+      );
+
+      // Delete rule - admins or the user themselves can delete/deregister
+      allow delete: if isSignedIn() && (request.auth.uid == userId || isExistingUserAdmin(request.auth.uid));
+    }
+
+    match /sheet/{document} {
+      // Any authenticated user can download and read the SDE Roadmap sheet structure
+      allow read: if isSignedIn();
+      
+      // Synthesizing structure edits is strictly confined to SDE Administrators
+      allow write: if isSignedIn() && isExistingUserAdmin(request.auth.uid);
+    }
+
+    match /announcements/{announcementId} {
+      // Any authenticated user can view the important news broadcasts and message streams
+      allow read: if isSignedIn();
+
+      // Only administrators can broadcast or manage announcements
+      allow write: if isSignedIn() && isExistingUserAdmin(request.auth.uid);
+    }
+
+    match /study_materials/{materialId} {
+      // Authenticated students can access study materials, notes, and worksheets
+      allow read: if isSignedIn();
+
+      // Only administrators can compile, upload, or manage study materials
+      allow write: if isSignedIn() && isExistingUserAdmin(request.auth.uid);
+    }
+  }
+}

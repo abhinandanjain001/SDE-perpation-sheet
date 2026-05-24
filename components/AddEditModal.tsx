@@ -14,6 +14,7 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
     title: '',
     url: '',
     difficulty: 'Easy' as Difficulty,
+    companies: '',
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -23,9 +24,10 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
         title: state.initialData.title || '',
         url: state.initialData.url || '',
         difficulty: state.initialData.difficulty || 'Easy',
+        companies: state.initialData.companies ? state.initialData.companies.join(', ') : '',
       });
     } else {
-      setFormData({ title: '', url: '', difficulty: 'Easy' });
+      setFormData({ title: '', url: '', difficulty: 'Easy', companies: '' });
     }
     setError(null);
   }, [state]);
@@ -43,7 +45,10 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { title, url, difficulty } = formData;
+    const { title, url, difficulty, companies } = formData;
+    const parsedCompanies = companies 
+      ? companies.split(',').map(c => c.trim()).filter(Boolean) 
+      : [];
 
     if (state.type === 'QUESTION') {
       if (!validateUrl(url)) {
@@ -62,8 +67,8 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
       }
     } else if (state.type === 'QUESTION') {
       if (state.grandParentId && state.parentId) {
-        if (state.mode === 'ADD') store.addQuestion(state.grandParentId, state.parentId, { title, url, difficulty });
-        else if (state.editId) store.editQuestion(state.grandParentId, state.parentId, state.editId, { title, url, difficulty });
+        if (state.mode === 'ADD') store.addQuestion(state.grandParentId, state.parentId, { title, url, difficulty, companies: parsedCompanies });
+        else if (state.editId) store.editQuestion(state.grandParentId, state.parentId, state.editId, { title, url, difficulty, companies: parsedCompanies });
       }
     }
 
@@ -131,6 +136,15 @@ const AddEditModal: React.FC<Props> = ({ state, onClose }) => {
                     </button>
                   ))}
                 </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Target Companies</label>
+                <input
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  value={formData.companies}
+                  onChange={e => setFormData({ ...formData, companies: e.target.value })}
+                  placeholder="Google, Microsoft, Amazon (comma separated)"
+                />
               </div>
             </>
           )}
