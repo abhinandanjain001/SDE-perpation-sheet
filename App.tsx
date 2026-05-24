@@ -10,17 +10,18 @@ import { doc, getDoc, setDoc, collection, getDocs, updateDoc } from 'firebase/fi
 import Auth from './components/Auth';
 import { AnnouncementsView } from './components/AnnouncementsView';
 import { StudyMaterialsView } from './components/StudyMaterialsView';
+import { ContestView } from './components/ContestView';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
-  const [userProfile, setUserProfile] = useState<{ role: 'admin' | 'student'; completedQuestions: string[] } | null>(null);
+  const [userProfile, setUserProfile] = useState<any | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
 
   // New States for Companies Filter, Admin Progression Dashboard, and Progress Modal
   const [selectedCompany, setSelectedCompany] = useState<string>('');
   const [isProgressModalOpen, setIsProgressModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'sheet' | 'students' | 'announcements' | 'materials'>('sheet');
+  const [activeTab, setActiveTab] = useState<'sheet' | 'students' | 'announcements' | 'materials' | 'contest'>('sheet');
   const [students, setStudents] = useState<any[]>([]);
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [selectedStudentForProgress, setSelectedStudentForProgress] = useState<any | null>(null);
@@ -136,6 +137,7 @@ const App: React.FC = () => {
           const mergedCompleted = Array.from(new Set([...cloudCompleted, ...localCompleted]));
 
           setUserProfile({
+            ...data,
             role: data.role || 'student',
             completedQuestions: mergedCompleted
           });
@@ -536,12 +538,12 @@ const App: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className="h-10 px-3 bg-white border border-slate-700 rounded-xl flex items-center justify-center shadow-md select-none shrink-0">
               <img 
-                src="/jecrc_logo.png" 
+                src="/jecrc%20logo.png" 
                 alt="JECRC Logo" 
                 className="h-7 w-auto object-contain" 
                 referrerPolicy="no-referrer"
                 onError={(e) => {
-                  e.currentTarget.src = "/jecrc logo.png";
+                  e.currentTarget.src = "/jecrc_logo.png";
                 }}
               />
               <span className="text-[11px] font-black text-slate-900 tracking-wider ml-1.5 hidden sm:inline-block">JECRC</span>
@@ -572,6 +574,12 @@ const App: React.FC = () => {
                 className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'materials' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
               >
                 📚 Study Material
+              </button>
+              <button
+                onClick={() => setActiveTab('contest')}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'contest' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+              >
+                🏆 Contests
               </button>
               {userProfile?.role === 'admin' && (
                 <button
@@ -941,6 +949,12 @@ service cloud.firestore {
           >
             📚 Materials
           </button>
+          <button
+            onClick={() => setActiveTab('contest')}
+            className={`flex-1 text-center py-2.5 px-3.5 rounded-xl text-xs font-black tracking-wide whitespace-nowrap transition-all duration-300 ${activeTab === 'contest' ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20' : 'text-slate-400 hover:text-slate-200'}`}
+          >
+            🏆 Contest
+          </button>
           {userProfile?.role === 'admin' && (
             <button
               onClick={() => setActiveTab('students')}
@@ -1242,6 +1256,26 @@ service cloud.firestore {
         />
       )}
 
+      {activeTab === 'contest' && (
+        <ContestView 
+          currentUser={user} 
+          userProfile={userProfile} 
+          onRefreshProfile={async () => {
+            if (user) {
+              const docRef = doc(db, 'users', user.uid);
+              const snap = await getDoc(docRef);
+              if (snap.exists()) {
+                const data = snap.data();
+                setUserProfile((prev: any) => ({
+                  ...prev,
+                  ...data
+                }));
+              }
+            }
+          }}
+        />
+      )}
+
       {activeTab === 'students' && userProfile?.role === 'admin' && (
         /* Students Registry and Statistics Board */
         <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 space-y-8 animate-fade-in">
@@ -1362,6 +1396,7 @@ service cloud.firestore {
           studentRole={selectedStudentForProgress.role}
           completedQuestionsIds={selectedStudentForProgress.completedQuestions || []}
           topics={topics}
+          contestHistory={selectedStudentForProgress.contestHistory || []}
         />
       )}
 

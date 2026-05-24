@@ -22,13 +22,6 @@ export const Auth: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Simulated OTP states for Forgot Password Flow
-  const [otpStep, setOtpStep] = useState<'request' | 'verify'>('request');
-  const [generatedOtp, setGeneratedOtp] = useState('');
-  const [userEnteredOtp, setUserEnteredOtp] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -145,7 +138,7 @@ export const Auth: React.FC = () => {
     }
   };
 
-  const handleRequestOtp = async (e: React.FormEvent) => {
+  const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       setError('Please provide your email address.');
@@ -155,57 +148,11 @@ export const Auth: React.FC = () => {
     setSuccessMessage('');
     setLoading(true);
     try {
-      // Simulate secure academic OTP generator
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedOtp(code);
-      setOtpStep('verify');
-      setSuccessMessage(`A 6-digit verification code has been dispatched to ${email}. Check the credential gateway card below to copy your code!`);
+      await sendPasswordResetEmail(auth, email);
+      setSuccessMessage('An actual password reset link has been securely sent to your recorded email! Please check your inbox (and spam folder) to reset your password instantly.');
     } catch (err: any) {
-      setError(err.message || 'OTP dispatch requested failed.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOtpAndReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSuccessMessage('');
-
-    if (!userEnteredOtp) {
-      setError('Please enter the 6-digit OTP code.');
-      return;
-    }
-    if (userEnteredOtp !== generatedOtp) {
-      setError('Invalid OTP code. Please copy and enter the correct code from the dispatch helper card.');
-      return;
-    }
-    if (!newPassword || newPassword.length < 6) {
-      setError('New password must be at least 6 characters long.');
-      return;
-    }
-    if (newPassword !== confirmNewPassword) {
-      setError('Passwords do not match. Please verify your typing.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      setSuccessMessage('🎉 Password updated successfully with JECRC Authentication Gateway! You are being redirected to Sign In.');
-      
-      setTimeout(() => {
-        setIsForgotPassword(false);
-        setOtpStep('request');
-        setGeneratedOtp('');
-        setUserEnteredOtp('');
-        setNewPassword('');
-        setConfirmNewPassword('');
-        setIsLogin(true);
-        setError('');
-        setSuccessMessage('');
-      }, 3500);
-    } catch (err: any) {
-      setError('Reset failed. Contact university SDE administrator.');
+      console.error(err);
+      setError(err.message || 'Password reset requested failed.');
     } finally {
       setLoading(false);
     }
@@ -224,13 +171,17 @@ export const Auth: React.FC = () => {
         <div className="text-center">
           <div className="relative inline-block mb-3 p-1 rounded-2xl bg-slate-900 border border-slate-800 shadow-inner">
             <img 
-              src="/jecrc_logo.png" 
+              src="/jecrc%20logo.png" 
               alt="JECRC SDE SHEET Logo" 
               className="h-16 w-auto mx-auto object-contain px-4 py-1.5" 
               referrerPolicy="no-referrer"
               onError={(e) => {
-                // Fallback default placeholder if logo isn't fully cached
-                e.currentTarget.style.display = 'none';
+                const target = e.currentTarget;
+                if (!target.src.endsWith('/jecrc_logo.png')) {
+                  target.src = '/jecrc_logo.png';
+                } else {
+                  target.style.display = 'none';
+                }
               }}
             />
           </div>
@@ -251,7 +202,7 @@ export const Auth: React.FC = () => {
         </div>
 
         {isForgotPassword ? (
-          /* Forgot Password View with secure OTP verification */
+          /* Actual Firebase password reset form */
           <div className="space-y-5">
             {error && (
               <div className="bg-rose-950/40 border border-rose-900/55 text-rose-300 p-4 rounded-xl text-xs font-semibold leading-relaxed">
@@ -264,127 +215,39 @@ export const Auth: React.FC = () => {
               </div>
             )}
 
-            {/* Simulated Server OTP dispatch info badge */}
-            {generatedOtp && otpStep === 'verify' && (
-              <div className="bg-indigo-950/60 border border-indigo-700/60 text-indigo-300 p-4 rounded-2xl text-xs space-y-2 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-1.5 bg-indigo-500/20 rounded-bl-xl text-[9px] font-black uppercase text-indigo-200 select-none tracking-widest">
-                  GATEWAY DISPATCH
-                </div>
-                <p className="font-bold text-slate-200">🔐 JECRC Secure Gateway Simulation:</p>
-                <div className="flex items-center justify-between bg-slate-900/80 p-2.5 rounded-xl border border-indigo-500/20">
-                  <span className="font-mono text-base font-black tracking-[0.25em] text-amber-400 select-all pl-1">
-                    {generatedOtp}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(generatedOtp);
-                      alert("Simulated OTP copied to clipboard! Paste it below to reset passsword.");
-                    }}
-                    className="text-[10px] bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold px-2.5 py-1.5 rounded-lg transition-colors"
-                  >
-                    Copy Code
-                  </button>
-                </div>
-                <p className="text-[10px] text-slate-400 font-medium leading-normal">Use this simulated OTP to complete password update. No real emails or SMS tokens are needed!</p>
+            <div className="bg-indigo-950/40 border border-indigo-900/55 text-indigo-300 p-4 rounded-2xl text-[11px] leading-relaxed space-y-1">
+              <span className="font-extrabold text-indigo-200 block">🔒 Fully Secure Recovery:</span>
+              We have migrated from simulated gateways to standard production-grade Firebase security. Entering your registered JECRC student/admin email will dispatch a physical, actual reset link to your personal inbox instantly.
+            </div>
+
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-300" htmlFor="reset-email">Email Address</label>
+                <input
+                  id="reset-email"
+                  type="email"
+                  required
+                  className="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:ring-1 focus:ring-indigo-500 outline-none transition-all duration-300 min-h-[44px]"
+                  placeholder="example@yourdomain.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-            )}
 
-            {otpStep === 'request' ? (
-              <form onSubmit={handleRequestOtp} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-300" htmlFor="reset-email">Email Address</label>
-                  <input
-                    id="reset-email"
-                    type="email"
-                    required
-                    className="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:ring-1 focus:ring-indigo-500 outline-none transition-all duration-300 min-h-[44px]"
-                    placeholder="example@yourdomain.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-3.5 px-4 text-xs font-black uppercase tracking-wider text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 transition-all duration-300 rounded-xl shadow-lg shadow-indigo-600/20 active:scale-98 min-h-[44px]"
-                >
-                  {loading ? 'Dispatched Request...' : 'Send Verification OTP'}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOtpAndReset} className="space-y-4 animate-fade-in">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-300" htmlFor="otp-code">6-Digit OTP Code</label>
-                  <input
-                    id="otp-code"
-                    type="text"
-                    required
-                    maxLength={6}
-                    className="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-white placeholder-slate-400 font-mono text-center text-lg tracking-[0.5em] focus:ring-1 focus:ring-indigo-500 outline-none transition-all duration-300 min-h-[44px]"
-                    placeholder="000000"
-                    value={userEnteredOtp}
-                    onChange={(e) => setUserEnteredOtp(e.target.value.replace(/\D/g, ''))}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-300" htmlFor="new-password">New Passcode</label>
-                  <input
-                    id="new-password"
-                    type="password"
-                    required
-                    className="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:ring-1 focus:ring-indigo-500 outline-none transition-all duration-300 min-h-[44px]"
-                    placeholder="Enter at least 6 characters"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-300" htmlFor="confirm-new-password">Confirm Password</label>
-                  <input
-                    id="confirm-new-password"
-                    type="password"
-                    required
-                    className="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:ring-1 focus:ring-indigo-500 outline-none transition-all duration-300 min-h-[44px]"
-                    placeholder="Verify new passcode"
-                    value={confirmNewPassword}
-                    onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-3.5 px-4 text-xs font-black uppercase tracking-wider text-white bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 transition-all duration-300 rounded-xl shadow-lg shadow-emerald-600/20 active:scale-98 min-h-[44px]"
-                >
-                  {loading ? 'Verifying & Updating...' : 'Verify OTP & Reset Password'}
-                </button>
-
-                <div className="text-center pt-1.5">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOtpStep('request');
-                      setError('');
-                      setSuccessMessage('');
-                    }}
-                    className="text-xs text-slate-400 hover:text-slate-300 font-bold transition-colors min-h-[30px]"
-                  >
-                    🔄 Resend OTP Code
-                  </button>
-                </div>
-              </form>
-            )}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 px-4 text-xs font-black uppercase tracking-wider text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 transition-all duration-300 rounded-xl shadow-lg shadow-indigo-600/20 active:scale-98 min-h-[44px]"
+              >
+                {loading ? 'Dispatched Request...' : 'Send Password Reset Email'}
+              </button>
+            </form>
 
             <div className="text-center pt-2">
               <button
                 type="button"
                 onClick={() => {
                   setIsForgotPassword(false);
-                  setOtpStep('request');
                   setError('');
                   setSuccessMessage('');
                 }}

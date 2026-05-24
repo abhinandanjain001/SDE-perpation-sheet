@@ -65,6 +65,78 @@ const DEFAULT_MATERIALS: StudyMaterial[] = [
     createdAt: "2026-05-24T17:15:00.000Z",
     createdBy: "Placement Prep Core",
     externalUrl: "https://github.com/loveBabbar/PlacementPrep"
+  },
+  {
+    id: "def-7",
+    title: "🚀 Complete OOPs & System Design Cheat Sheet",
+    description: "High-yield guide covering Object-Oriented Programming (OOP) concepts such as inheritance, polymorphism, encapsulation, abstraction with real C++ and Java code blueprints. Includes System Design basics (monolith vs microservices, load balancers, scaling, caching, sharding).",
+    category: "Cheatsheets",
+    createdAt: "2026-05-24T18:00:00.000Z",
+    createdBy: "JECRC SDE Mentor",
+    externalUrl: "https://github.com/ashishps1/System-Design-Cheat-Sheet"
+  },
+  {
+    id: "def-8",
+    title: "🧠 Recursion & Backtracking Drill Sheet",
+    description: "Step-by-step master guide covering recursion trees, stack tracing, and standard backtracking algorithms: N-Queens, Sudoku Solver, Rat in a Maze, Word Search, and Subsets II. Includes recursive layout flowcharts and patterns.",
+    category: "DSA Notes",
+    createdAt: "2026-05-24T18:10:00.000Z",
+    createdBy: "Academic Head SDE",
+    externalUrl: "https://leetcode.com/discuss/study-guide/1405817/backtracking-algorithm-for-beginners"
+  },
+  {
+    id: "def-9",
+    title: "💡 JECRC Mock Interview Coding Prep Set",
+    description: "Compiled list of high-probability coding questions from previous JECRC campus recruitment partners and tech product startups. Includes solutions, dry-runs, and common patterns like two pointers, sliding window, and hashing.",
+    category: "Placement Prep",
+    createdAt: "2026-05-24T18:20:00.000Z",
+    createdBy: "Placement Cell Coordinator",
+    externalUrl: "https://github.com/loveBabbar/PlacementPrep"
+  },
+  {
+    id: "def-10",
+    title: "📔 SQL & Database Management Systems Comprehensive Book",
+    description: "Academic notes on DBMS covering ER Diagrams, normalization forms (1NF, 2NF, 3NF, BCNF) with easy table examples, basic to advanced SQL queries (Joins, aggregations, nested queries, transactions), and indexing.",
+    category: "DSA Notes",
+    createdAt: "2026-05-24T18:30:00.000Z",
+    createdBy: "CSE Faculty Unit",
+    externalUrl: "https://github.com/Siddharth-J/DBMS-Notes"
+  },
+  {
+    id: "def-11",
+    title: "🌐 Web Development (MERN Stack) JECRC SDE Project Kit",
+    description: "Full placement-ready full-stack project blueprints for final year campus submissions. Step-by-step guide to configure React, Node.js, Express, and MongoDB with secure JWT authorization, middleware, and standard folder setups.",
+    category: "Other",
+    createdAt: "2026-05-24T18:40:00.000Z",
+    createdBy: "JECRC Academy Coordinator",
+    externalUrl: "https://github.com/gothinkster/react-redux-realworld-example-app"
+  },
+  {
+    id: "def-12",
+    title: "📄 SDE Placement Resume Template (ATS-Compliant Overleaf)",
+    description: "Handpicked, maximum-conversion resume style in Overleaf LaTeX favoring product engineering recruiters. Includes sections for target DSA metrics, key projects, internship highlights, and open source commits.",
+    category: "Placement Prep",
+    createdAt: "2026-05-24T18:50:00.000Z",
+    createdBy: "Placement Prep Core",
+    externalUrl: "https://github.com/debarghyadas/asajadi-resume-template"
+  },
+  {
+    id: "def-13",
+    title: "⚡ Bit Manipulation Master Guide & Bitwise Tricks",
+    description: "Curated revision cheatsheet on binary representation, standard bit operations (AND, OR, XOR, NOT, shift operators), and standard optimization tricks (power of 2, set bits, finding single numbers).",
+    category: "Cheatsheets",
+    createdAt: "2026-05-24T19:00:00.000Z",
+    createdBy: "JECRC SDE Mentor",
+    externalUrl: "https://codeforces.com/blog/entry/73490"
+  },
+  {
+    id: "def-14",
+    title: "🎓 JECRC B.Tech CSE Semester-Wise Academic SDE Roadmap",
+    description: "Curated university roadmap aligning engineering curriculum with high-tier SDE career tracks. Covers target milestones from sophomore DSA foundational courses to senior mock interview challenges.",
+    category: "Syllabus",
+    createdAt: "2026-05-24T19:10:00.000Z",
+    createdBy: "Academic Head SDE",
+    externalUrl: "https://jecrcuniversity.edu.in/"
   }
 ];
 
