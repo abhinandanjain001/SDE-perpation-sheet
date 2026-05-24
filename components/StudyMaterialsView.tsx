@@ -11,6 +11,63 @@ interface StudyMaterialsViewProps {
 
 const CATEGORIES = ["All", "DSA Notes", "Placement Prep", "Syllabus", "Cheatsheets", "Other"];
 
+const DEFAULT_MATERIALS: StudyMaterial[] = [
+  {
+    id: "def-1",
+    title: "🎨 Dynamic Programming Master Cheatsheet",
+    description: "Detailed cheatsheet covering 0/1 Knapsack, Unbounded Knapsack, LCS, LIS, MCM, and Grid DP patterns. Includes state transition equations, recursion trees, and optimized C++ / Java / Python implementations.",
+    category: "Cheatsheets",
+    createdAt: "2026-05-15T10:00:00.000Z",
+    createdBy: "JECRC SDE Mentor",
+    externalUrl: "https://codeforces.com/blog/entry/67679"
+  },
+  {
+    id: "def-2",
+    title: "🎓 JECRC Campus Placement Preparation Kit (Mass & Product Recruits)",
+    description: "Comprehensive handbook containing interview questions from previous JECRC campus recruitment drives, ATS-friendly resume templates, HR feedback rules, and behavior assessment mock checklists.",
+    category: "Placement Prep",
+    createdAt: "2026-05-18T12:00:00.000Z",
+    createdBy: "Placement Cell Coordinator",
+    externalUrl: "https://github.com/loveBabbar/PlacementPrep"
+  },
+  {
+    id: "def-3",
+    title: "🌟 Graph Algorithms Cheat Sheet & Complexities Guide",
+    description: "Complete visual guide and revision cheat sheet for BFS, DFS, Dijkstra's algorithm, Bellman-Ford, Kruskal's, Prim's, and Floyd-Warshall. High-fidelity time and space complexity evaluations.",
+    category: "Cheatsheets",
+    createdAt: "2026-05-20T09:00:00.000Z",
+    createdBy: "CSE Faculty Unit",
+    externalUrl: "https://github.com/mushfiq/Graph-Algorithms"
+  },
+  {
+    id: "def-4",
+    title: "📝 Sliding Window & Two Pointer Master Checklist",
+    description: "Lecture notes and optimal code blueprints covering fixed-size and variable-size sliding windows. Step-by-step walkthroughs of classic subarray problems.",
+    category: "DSA Notes",
+    createdAt: "2026-05-22T14:30:00.000Z",
+    createdBy: "Academic Head SDE",
+    externalUrl: "https://leetcode.com/discuss/study-guide/1125139/sliding-window-algorithm-template-to-solve-all-sliding-window-problems"
+  },
+  {
+    id: "def-5",
+    title: "📘 JECRC Special SDE Sheet Syllabus & Placement benchmarks",
+    description: "Syllabus timeline for the JECRC SDE Special Phase. Outlines mandatory daily assignments counts, code practice benchmarks, weekly coding assessment models, and internal academic credits rules.",
+    category: "Syllabus",
+    createdAt: "2026-05-24T08:00:00.000Z",
+    createdBy: "JECRC Academy Coordinator",
+    externalUrl: "https://jecrcuniversity.edu.in/"
+  },
+  {
+    id: "def-6",
+    title: "📦 DBMS, OS, & Computer Networks RAPID Interview Guide",
+    description: "Quick-revision placement booklet covering database ACID properties, SQL inner/outer joins, normalizing forms, operating system CPU scheduling, paging, deadlocks, and TCP/IP protocol stack layers.",
+    category: "Placement Prep",
+    createdAt: "2026-05-24T17:15:00.000Z",
+    createdBy: "Placement Prep Core",
+    externalUrl: "https://github.com/loveBabbar/PlacementPrep"
+  }
+];
+
 export const StudyMaterialsView: React.FC<StudyMaterialsViewProps> = ({ isAdmin, currentUser }) => {
   const [materials, setMaterials] = useState<StudyMaterial[]>([]);
   const [loading, setLoading] = useState(true);
@@ -168,7 +225,7 @@ export const StudyMaterialsView: React.FC<StudyMaterialsViewProps> = ({ isAdmin,
   };
 
   // Filter study materials based on query and category chip selection
-  const filteredMaterials = materials.filter(m => {
+  const filteredMaterials = [...materials, ...DEFAULT_MATERIALS].filter(m => {
     const matchesSearch = 
       m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       m.description.toLowerCase().includes(searchQuery.toLowerCase()) ||

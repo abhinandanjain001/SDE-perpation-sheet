@@ -534,8 +534,17 @@ const App: React.FC = () => {
       <header className="bg-slate-950 border-b border-slate-800/60 sticky top-0 z-40 backdrop-blur-md bg-slate-950/90 text-white">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/10 shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 7h12"/><path d="M6 11h12"/><path d="M6 15h12"/></svg>
+            <div className="h-10 px-3 bg-white border border-slate-700 rounded-xl flex items-center justify-center shadow-md select-none shrink-0">
+              <img 
+                src="/jecrc_logo.png" 
+                alt="JECRC Logo" 
+                className="h-7 w-auto object-contain" 
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = "/jecrc logo.png";
+                }}
+              />
+              <span className="text-[11px] font-black text-slate-900 tracking-wider ml-1.5 hidden sm:inline-block">JECRC</span>
             </div>
             <div>
               <h1 className="text-xs sm:text-sm font-black text-white leading-none uppercase tracking-widest">{title}</h1>
@@ -596,19 +605,7 @@ const App: React.FC = () => {
               </button>
             )}
 
-            {/* JECRC Logo on the right hand side */}
-            <div className="h-10 px-3 bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-md select-none shrink-0">
-              <img 
-                src="/jecrc logo.png" 
-                alt="JECRC Logo" 
-                className="h-7 w-auto object-contain" 
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  e.currentTarget.src = "/jecrc_logo.png";
-                }}
-              />
-              <span className="text-[10px] font-black text-slate-900 tracking-wider ml-1.5 hidden sm:inline-block">JECRC</span>
-            </div>
+
 
             <div className="relative">
               <button
